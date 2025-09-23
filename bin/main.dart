@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dart_basic_assignment/1_score_to_grade/score_to_grade.dart';
+import 'package:dart_basic_assignment/2_console_shopping_mall/console_shopping_mall.dart';
 
 void main() {
   stdout.write(
@@ -13,6 +14,7 @@ void main() {
   if (number == 1) {
     runScoreToGarde();
   } else if (number == 2) {
+    runMall();
   } else if (number == 3) {
   } else {
     throw Exception('1~3번 숫자를 입력해 주세요.');
