@@ -24,8 +24,8 @@ import 'dart:io';
 
 void runScoreToGarde() {
   stdout.write('학생의 점수를 입력하세요: ');
-
   String? intput = stdin.readLineSync();
+
   int score = parseScore(input: intput);
   String grade = getGrade(score: score);
 
