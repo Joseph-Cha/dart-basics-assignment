@@ -36,17 +36,17 @@ int parseScore({required String? input}) {
   if (input != null && input.isNotEmpty) {
     int? score = int.tryParse(input);
     if (score == null) {
-      throw Exception('잘못된 형식입니다. 숫자를 입력해 주세요.');
+      throw FormatException('잘못된 형식입니다. 숫자를 입력해 주세요.');
     }
     return score;
   } else {
-    throw Exception('점수 입력이 안되었습니다.');
+    throw StdinException('점수 입력이 안되었습니다.');
   }
 }
 
 String getGrade({required int score}) {
   if (score > 100 || score < 0) {
-    throw Exception('점수 입력 범위를 벗어났습니다. 0~100 사이의 점수를 입력해 주세요.');
+    throw ArgumentError('점수 입력 범위를 벗어났습니다. 0~100 사이의 점수를 입력해 주세요.');
   }
   if (score >= 90) {
     return 'A';
