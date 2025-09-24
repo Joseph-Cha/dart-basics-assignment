@@ -1,25 +1,18 @@
-class Product {
-  late String name;
-  late int price;
+abstract class Product {
+  final String name;
+  final int price;
+
+  const Product({required this.name, required this.price});
 }
 
 class TShirt extends Product {
-  TShirt({String name = "티셔츠", int price = 10000}) {
-    super.name = name;
-    super.price = price;
-  }
+  const TShirt({super.name = "티셔츠", super.price = 10000});
 }
 
 class Pants extends Product {
-  Pants({String name = "바지", int price = 8000}) {
-    super.name = name;
-    super.price = price;
-  }
+  const Pants({super.name = "바지", super.price = 8000});
 }
 
 class Hat extends Product {
-  Hat({String name = "모자", int price = 4000}) {
-    super.name = name;
-    super.price = price;
-  }
+  const Hat({super.name = "모자", super.price = 4000});
 }

@@ -1,17 +1,26 @@
 import 'package:dart_basic_assignment/2_console_shopping_mall/products.dart';
 
 class Cart {
-  List<Product> products = [];
+  final List<Product> _products = [];
 
-  void add(Product product) {
-    products.add(product);
+  void addProduct(Product product) {
+    _products.add(product);
   }
 
-  void addAll(Iterable<Product> products) {
-    this.products.addAll(products);
+  void addProducts(Iterable<Product> products) {
+    _products.addAll(products);
   }
 
-  List<Product> getAllProducts() {
-    return products;
+  List<Product> get products => List.unmodifiable(_products);
+
+  int get totalPrice =>
+      _products.fold(0, (sum, product) => sum + product.price);
+
+  void clear() {
+    _products.clear();
+  }
+
+  bool removeProduct(Product product) {
+    return _products.remove(product);
   }
 }

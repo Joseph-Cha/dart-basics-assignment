@@ -2,19 +2,21 @@ import 'package:dart_basic_assignment/2_console_shopping_mall/cart.dart';
 import 'package:dart_basic_assignment/2_console_shopping_mall/products.dart';
 
 class Person {
-  Cart cart;
+  final Cart _cart;
 
-  Person(this.cart);
+  Person() : _cart = Cart();
+
+  Cart get cart => _cart;
 
   void addProduct(Product product) {
-    cart.add(product);
+    _cart.addProduct(product);
   }
 
-  void addAllProduct(Iterable<Product> products) {
-    cart.addAll(products);
+  void addProducts(Iterable<Product> products) {
+    _cart.addProducts(products);
   }
 
-  List<Product> getAllProducts() {
-    return cart.getAllProducts();
-  }
+  List<Product> get products => _cart.products;
+
+  int get totalSpent => _cart.totalPrice;
 }

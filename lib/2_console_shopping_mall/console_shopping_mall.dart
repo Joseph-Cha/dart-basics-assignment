@@ -73,16 +73,20 @@ List<String> cart = ["티셔츠", "바지", "모자", "티셔츠", "바지"];​
 -------------------------------------------
  */
 
-import 'package:dart_basic_assignment/2_console_shopping_mall/cart.dart';
 import 'package:dart_basic_assignment/2_console_shopping_mall/person.dart';
 import 'package:dart_basic_assignment/2_console_shopping_mall/products.dart';
 import 'package:dart_basic_assignment/2_console_shopping_mall/shopping_mall.dart';
 
 void runMall() {
-  Cart cart = Cart();
-  Person person = Person(cart);
-  person.addAllProduct([TShirt(), Pants(), Hat(), TShirt(), Pants()]);
-  ShoppingMall mall = ShoppingMall(person);
+  final person = Person();
+  person.addProducts([
+    const TShirt(),
+    const Pants(),
+    const Hat(),
+    const TShirt(),
+    const Pants(),
+  ]);
 
-  mall.printCartPrice();
+  final shoppingMall = ShoppingMall(person);
+  shoppingMall.printReceipt();
 }
