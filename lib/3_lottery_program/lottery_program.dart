@@ -74,94 +74,95 @@
 현재 발급한 로또 번호: []
 
 -------------------------------------------------------------
-
-### 추가. 나만의 기능
-몇번을 테스트를 진행했을 때 계속 실패만 나오고 있어서 당첨이 될 때까지 프로그램을 돌리는 기능을 추가해 보려고 한다.
-
 */
 
 import 'dart:math';
 
+enum LotteryResult {
+  firstPrize('1등'),
+  secondPrize('2등'),
+  thirdPrize('3등'),
+  failed('실패');
+
+  const LotteryResult(this.displayName);
+  final String displayName;
+}
+
+class LotteryTicket {
+  static const int _minNumber = 1;
+  static const int _maxNumber = 45;
+  static const int _ticketSize = 6;
+
+  List<int> _numbers = [];
+  final Random _random = Random();
+
+  List<int> get numbers => List.unmodifiable(_numbers);
+
+  void generateNumbers() {
+    final availableNumbers = List.generate(
+      _maxNumber,
+      (index) => index + _minNumber,
+    );
+    availableNumbers.shuffle(_random);
+    _numbers = availableNumbers.take(_ticketSize).toList()..sort();
+  }
+
+  void clear() {
+    _numbers.clear();
+  }
+
+  @override
+  String toString() => _numbers.toString();
+}
+
+class LotteryGame {
+  static const Set<int> _winningNumbers = {9, 19, 29, 35, 37, 38};
+
+  final LotteryTicket _ticket = LotteryTicket();
+
+  LotteryResult checkWinning() {
+    final matchCount = _ticket.numbers.where(_winningNumbers.contains).length;
+
+    if (matchCount >= 5) return LotteryResult.firstPrize;
+    if (matchCount == 4) return LotteryResult.secondPrize;
+    if (matchCount == 3) return LotteryResult.thirdPrize;
+    return LotteryResult.failed;
+  }
+
+  void playUntilWin() {
+    LotteryResult result;
+
+    do {
+      _ticket.generateNumbers();
+      result = checkWinning();
+    } while (result == LotteryResult.failed);
+
+    _printResult(result);
+  }
+
+  void _printResult(LotteryResult result) {
+    print('-----------------------------------------');
+    print('');
+    print('도전 문제');
+    print('');
+    print('발급한 로또 번호: $_ticket');
+    print('');
+
+    if (result == LotteryResult.failed) {
+      print('당첨 여부: 당첨 실패');
+    } else {
+      print('당첨 여부: ${result.displayName}');
+    }
+    print('');
+
+    _ticket.clear();
+    print('현재 발급한 로또 번호: $_ticket');
+    print('');
+    print('-----------------------------------------');
+  }
+}
+
 void runLottery() {
-  Set<int> selectedNumbers = {};
-  Iterable<int> check = {};
-  String result = '';
-  while (true) {
-    selectedNumbers = selectNumber();
-    check = checkWinningNumbers(selectedNumbers);
-    result = getSuccess(check);
-    if (result != '실패') {
-      break;
-    }
-  }
-
-  printResult(selectedNumbers, result);
-}
-
-Set<int> selectNumber() {
-  final Set<int> selectedNumbers = {};
-  for (int i = 0; i < 6; i++) {
-    addNumber(selectedNumbers, i);
-  }
-  return selectedNumbers;
-}
-
-void addNumber(Set<int> selectedNumbers, int index) {
-  while (true) {
-    int number = getNumber();
-    selectedNumbers.add(number);
-    if (selectedNumbers.length == index + 1) {
-      break;
-    }
-  }
-}
-
-int getNumber() {
-  while (true) {
-    int number = Random().nextInt(46);
-    if (number > 0) {
-      return number;
-    }
-  }
-}
-
-Iterable<int> checkWinningNumbers(Set<int> list) {
-  final Set<int> winningNumbers = {9, 19, 29, 35, 37, 38};
-  return list.where((n) {
-    return winningNumbers.contains(n);
-  });
-}
-
-String getSuccess(Iterable<int> list) {
-  if (list.length > 5) {
-    return '1등';
-  } else if (list.length == 4) {
-    return '2등';
-  } else if (list.length == 3) {
-    return '3등';
-  } else {
-    return '실패';
-  }
-}
-
-void printResult(Set<int> selectedNumbers, String result) {
-  print('-----------------------------------------');
-  print('');
-  print('도전 문제');
-  print('');
-  print('발급한 로또 번호: $selectedNumbers');
-  print('');
-  if (result == '실패') {
-    print('당청 여부: 당첨 실패');
-    print('');
-  } else {
-    print('당청 여부: $result');
-    print('');
-  }
-  clear(selectedNumbers);
-  print('현재 발급한 로또 번호: $selectedNumbers');
-}
-
-void clear(Set<int> list) {
-  list.clear();
+  final lotteryGame = LotteryGame();
+  lotteryGame.playUntilWin();
 }
